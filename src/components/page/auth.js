@@ -1,21 +1,110 @@
 'use client'
 
-export default () => {
+import { useRouter } from "next/navigation"
+import { useState } from "react"
 
-    const handleUserLogin = () => {
-  
+export default () => {
+    const router = useRouter()
+    const [userFormData, setUserFormData] = useState({
+        username: '',
+        password: ''
+    })
+    const [officialFormData, setofficialFormData] = useState({
+        officialId: '',
+        role: '',
+        password: ''
+    })
+    function showErrors(response) {
+        if (response.status === false && response.errors && response.errors.length > 0) {
+            alert("Errors:\n" + response.errors.join("\n"));
+        } else if (response.message) {
+            alert(response.message);
+        } else {
+            alert("Unknown error occurred.");
+        }
     }
-    const handleOfficialLogin = () => {
-  
+    const handleUserLogin = async (event) => {
+        event.preventDefault();
+        // Basic validation
+        if (!userFormData.username || !userFormData.password) {
+            alert("Please fill in all fields");
+            // return;
+        }
+        const response = await fetch("http://localhost:8080/api/user/login", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                "Access-Control-Allow-Origin": "*",
+                mode: 'no-cors'
+            },
+            body: JSON.stringify(userFormData)
+        });
+        const res = await response.json()
+        if (!res.status) {
+            showErrors(res)
+        } else {
+            // Redirect to user dashboard
+            document.cookie = `token=${res.data.token}`;
+            delete res.token
+            localStorage.setItem('user', JSON.stringify(res.data))
+            // document.cookie = `token=${res.data.token}; HttpOnly; Secure`;
+            router.push("user/dashboard");
+        }
+
     }
+    const handleOfficialLogin = async (event) => {
+        event.preventDefault()
+        const response = await fetch("http://localhost:8080/api/official/login", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                "Access-Control-Allow-Origin": "*",
+                mode: 'no-cors'
+            },
+            body: JSON.stringify(officialFormData)
+        });
+        const res = await response.json()
+        if (!response.ok) {
+            alert(res.message)
+            return
+        }
+    }
+    const handleChange = (e) => {
+        setUserFormData({
+            ...userFormData,
+            [e.target.name]: e.target.value,
+        });
+    };
+    const handleOficialChange = (e) => {
+        setofficialFormData({
+            ...officialFormData,
+            [e.target.name]: e.target.value,
+        });
+    };
+    const roles = [
+        { value: "", text: "Select Role" },
+        { value: "ministryofwelfare", text: "Ministry of Welfare" },
+        { value: "district_collector", text: "District Collector" },
+        { value: "jointcollector", text: "Joint Collector" },
+        { value: "revenuedepartmentofficer", text: "Revenue Department Officer" },
+        { value: "revenueinspector", text: "Revenue Inspector" },
+        { value: "vro", text: "VRO (Village Revenue Officer)" },
+        { value: "mro", text: "MRO (Mandal Revenue Officer)" },
+        { value: "surveyor", text: "Surveyor" },
+        { value: "project_officer", text: "Project Officer" },
+        { value: "superintendent", text: "Superintendent" },
+        { value: "officer", text: "Officer" },
+        { value: "clerk", text: "Clerk" }
+    ];
+
     return (
         <section className="login-container">
             <div className="login-container">
                 <div className="login-box">
                     <h2>User Login</h2>
-                    <form id="userLoginForm" onSubmit={handleUserLogin(event)}>
-                        <input type="text" name="username" placeholder="Username" required />
-                        <input type="password" name="password" placeholder="Password" required />
+                    <form id="userLoginForm" onSubmit={handleUserLogin}>
+                        <input onChange={(e) => handleChange(e)} value={userFormData.username} type="text" name="username" placeholder="Username" required />
+                        <input onChange={(e) => handleChange(e)} value={userFormData.password} type="password" name="password" placeholder="Password" required />
                         <div className="spacer"></div>
                         <button type="submit" className="button">
                             <i className="fas fa-sign-in-alt"></i>
@@ -30,26 +119,13 @@ export default () => {
 
                 <div className="login-box">
                     <h2>Official Login</h2>
-                    <form id="officialLoginForm" onSubmit={handleOfficialLogin(event)}>
-                        <input type="text" placeholder="Official ID" name="officialId" required />
-                        <select name="role" required>
-                            <option value="">Select Role</option>
-                            <option value="ministryofwelfare">Ministry of Welfare</option>
-                            <option value="district_collector">District Collector</option>
-                            <option value="jointcollector">Joint Collector</option>
-                            <option value="revenuedepartmentofficer">
-                                Revenue Department Officer
-                            </option>
-                            <option value="revenueinspector">Revenue Inspector</option>
-                            <option value="vro">VRO (Village Revenue Officer)</option>
-                            <option value="mro">MRO (Mandal Revenue Officer)</option>
-                            <option value="surveyor">Surveyor</option>
-                            <option value="project_officer">Project Officer</option>
-                            <option value="superintendent">Superintendent</option>
-                            <option value="officer">Officer</option>
-                            <option value="clerk">Clerk</option>
+                    {officialFormData.role}
+                    <form id="officialLoginForm" onSubmit={handleOfficialLogin}>
+                        <input type="text" placeholder="Official ID" value={officialFormData.officialId} onChange={handleOficialChange} name="officialId" required />
+                        <select name="role" value={officialFormData.role} onChange={handleOficialChange} required>
+                            {roles.map((item, index) => <option key={index} value={item.value}>{item.text}</option>)}
                         </select>
-                        <input type="password" placeholder="Password" name="password" required />
+                        <input type="password" value={officialFormData.password} onChange={handleOficialChange} placeholder="Password" name="password" required />
                         <button type="submit" className="button">
                             <i className="fas fa-user-shield"></i>
                             Login
