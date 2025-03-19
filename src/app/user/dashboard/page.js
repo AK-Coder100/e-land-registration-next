@@ -13,32 +13,8 @@ export default () => {
 
     useEffect(() => {
         const user = JSON.parse(localStorage.getItem('user')) || {}
-        console.log(user)
         setUserData(user)
     },[])
-    var renderUserData = () => {
-        // const inputs = {
-        //     'userName': {
-        //         name: 'userName',
-        //         variable: 'username'
-        //     },
-        //     'phoneNumber': {
-        //         name: 'phoneNumber',
-        //         variable: 'mobileno'
-        //     },
-        //     'addharNumber': {
-        //         name: 'addharNumber',
-        //         variable: 'aadhar'
-        //     }
-        // }
-        // const userData = JSON.parse(localStorage.getItem('user')) || {}
-        // const section = document.getElementById('user-dashboard-tab1')
-        // Object.values(inputs).forEach(item => {
-        //     const input = section.querySelector(`[name="${item.name}"]`)
-        //     input.value = userData[item.variable] || ''
-        // });
-    }
-    renderUserData()
     return (
         <div className="row" id="user-dashboard-tab1">
             <div className="container-section">

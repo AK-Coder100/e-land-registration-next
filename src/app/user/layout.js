@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import '../user/layout.css'
 import { useRouter } from "next/navigation";
 import Link from "next/link";
@@ -9,6 +9,7 @@ export default ({ children }) => {
     const [userData, setUserData] = useState({
         username: ''
     })
+
     const router = useRouter()
     const tabItems = [
         { id: "dashboard", label: "DASHBOARD", href: "/user/dashboard", disabled: true },
@@ -26,6 +27,11 @@ export default ({ children }) => {
         { id: "issue-inbox", label: "Inbox", href: "/user/issue/inbox" },
         { id: "issue-returned", label: "Returned", href: "/user/returned" },
     ];
+
+    useEffect(() => {
+        const user = JSON.parse(localStorage.getItem('user')) || {}
+        setUserData(user)
+    }, [])
     return (
         <html lang="en">
             <body>
@@ -61,7 +67,7 @@ export default ({ children }) => {
                     <div className="sidebar-icon" data-icon="settings"><i className="fas fa-cog"></i></div>
                 </div>
                 <div className="notebook" >
-                    <div className="tab-buttons" style={{marginBottom:'10px'}}>
+                    <div className="tab-buttons" style={{ marginBottom: '10px' }}>
                         {tabItems.map((tab) => (
                             tab.disabled ? (
                                 <button key={tab.id} className="tab-btn disabled" disabled>
