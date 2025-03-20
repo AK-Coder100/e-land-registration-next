@@ -19,7 +19,7 @@ export default () => {
                 body: JSON.stringify({
                     page: 1,
                     limit: 10,
-                    status:['generated','submitted']
+                    status:'file'
                 })
             });
             const res = await response.json()

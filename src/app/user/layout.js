@@ -2,7 +2,9 @@
 
 import { useEffect, useState } from "react";
 import '../user/layout.css'
-import { useRouter } from "next/navigation";
+import '../user/inbox.css'
+import '../user/file.css'
+import { usePathname, useRouter } from "next/navigation";
 import Link from "next/link";
 
 export default ({ children }) => {
@@ -11,6 +13,7 @@ export default ({ children }) => {
     })
 
     const router = useRouter()
+    const pathname = usePathname()
     const tabItems = [
         { id: "dashboard", label: "DASHBOARD", href: "/user/dashboard", disabled: true },
         { id: "view", label: "View", href: "/user/view" },
@@ -75,7 +78,7 @@ export default ({ children }) => {
                                 </button>
                             ) : (
                                 <Link key={tab.id} href={tab.href} passHref>
-                                    <button className={`tab-btn ${router.pathname === tab.href ? "active" : ""}`}>
+                                    <button className={`tab-btn ${pathname === tab.href ? "active" : ""}`}>
                                         {tab.label}
                                     </button>
                                 </Link>
