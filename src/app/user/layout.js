@@ -16,7 +16,7 @@ export default ({ children }) => {
     const pathname = usePathname()
     const tabItems = [
         { id: "dashboard", label: "DASHBOARD", href: "/user/dashboard", disabled: true },
-        { id: "view", label: "View", href: "/user/view" },
+        { id: "view", label: "View", href: "/user/dashboard" },
         { id: "receipt", label: "RECEIPT", href: "/user/receipt", disabled: true },
         { id: "create", label: "Create", href: "/user/receipt/create" },
         { id: "inbox", label: "Inbox", href: "/user/receipt/inbox" },
@@ -36,8 +36,7 @@ export default ({ children }) => {
         setUserData(user)
     }, [])
     return (
-        <html lang="en">
-            <body>
+        <>
                 <header>
                     <div className="header-left">
                         <div className="globe-icon"></div>
@@ -90,7 +89,6 @@ export default ({ children }) => {
                     </div>
                 </div>
 
-            </body>
-        </html>
+        </>
     );
 }
