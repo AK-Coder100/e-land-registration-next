@@ -13,6 +13,9 @@ export default () => {
     const removePDF = () => {
         setLandData((e) => ({ ...e, file: '' }))
     }
+    const removePDF2 = () => {
+        setLandData((e) => ({ ...e, file2: '' }))
+    }
     
     function showErrors(response) {
         if (response.status === false && response.errors && response.errors.length > 0) {
@@ -45,7 +48,7 @@ export default () => {
             aadhar: payload.aadharNumber,
             dob: payload.dob,
             owner_name: payload.ownerName,
-            survey_no: payload.surveyNumber,
+            // survey_no: payload.surveyNumber,
             ...payload
         }
         try {
@@ -97,6 +100,14 @@ export default () => {
                                 <button type="button" className="land-request-remove-btn" onClick={removePDF}>Remove ×</button>
                                 <span className="land-request-pdf-info">PDF Only ≤ 20 MB *</span>
                             </div>
+                            <div className="land-request-upload-section">
+                                <input type="file" id="land-request-pdf-upload2" name="land-request-pdf-upload"
+                                    accept="application/pdf" onChange={(e) => setLandData({ ...landData, file2: URL.createObjectURL(e.target.files[0]) })} className="land-request-input" style={{ display: 'none' }} />
+                                <button type="button" className="land-request-upload-btn" ><label
+                                    htmlFor="land-request-pdf-upload2">Upload ↑</label></button>
+                                <button type="button" className="land-request-remove-btn" onClick={removePDF2}>Remove ×</button>
+                                <span className="land-request-pdf-info">PDF Only ≤ 20 MB *</span>
+                            </div>
 
                             <h3 className="land-request-heading">Personal Details</h3>
                             <div className="land-request-form-columns">
@@ -138,11 +149,11 @@ export default () => {
                                         <input type="text" id="land-request-ownerName" name="ownerName" className="land-request-input"
                                             required />
                                     </div>
-                                    <div className="land-request-form-group">
+                                    {/* <div className="land-request-form-group">
                                         <label className="land-request-label" htmlFor="land-request-surveyNumber">Survey Number:</label>
                                         <input type="text" id="land-request-surveyNumber" name="surveyNumber"
                                             className="land-request-input" required />
-                                    </div>
+                                    </div> */}
                                     <div className="land-request-form-group">
                                         <label className="land-request-label" htmlFor="land-request-area">Area (in sq. ft):</label>
                                         <input type="number" id="land-request-area" name="area" className="land-request-input" required />

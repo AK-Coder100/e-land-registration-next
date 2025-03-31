@@ -31,7 +31,20 @@ const Preview = () => {
     }
     const updateResite = async () => {
 
-        if(reciptData.status != 'generated') return
+        if(reciptData.status != 'generated') {
+            await Swal.fire({
+                title: "Warning",
+                text: "Already Generated",
+                icon: "warning",
+                // showCancelButton: true,
+                confirmButtonColor: "#3085d6",
+                // cancelButtonColor: "#d33",
+                confirmButtonText: "OK",
+                // cancelButtonText: "Cancel"
+            })
+            router.replace('/user/receipt/inbox')
+            return
+        }
         try {
             const response = await fetch("http://localhost:8080/api/land/update-recipt-status", {
                 method: "PUT",
@@ -51,7 +64,7 @@ const Preview = () => {
                 const acc = await Swal.fire({
                     title: "Confirmation",
                     text: "File successfull",
-                    icon: "warning",
+                    icon: "success",
                     // showCancelButton: true,
                     confirmButtonColor: "#3085d6",
                     // cancelButtonColor: "#d33",
@@ -221,7 +234,7 @@ const Preview = () => {
                                 </div>
                             </div>
                         </div>
-                        <button className="acknowledge-button" disabled={reciptData.status != 'generated'} onClick={updateResite}>Submit</button>
+                        <button className="acknowledge-button" onClick={updateResite}>Submit</button>
 
                     </div>
                 </div>

@@ -4,8 +4,11 @@ import { useEffect, useState } from "react";
 
 
 export default () => {
-    var dataList = {}
     const [recilList, setReciptList] = useState([])
+    const [searchedText, setSearchedText] = useState({
+        survey_no: '',
+        receiptId: ''
+    })
     var getLandList = async () => {
         try {
             const response = await fetch("http://localhost:8080/api/land/get-recipt-list", {
@@ -19,7 +22,8 @@ export default () => {
                 body: JSON.stringify({
                     page: 1,
                     limit: 10,
-                    status:['generated','submitted']
+                    status: ['generated', 'submitted'],
+                    ...searchedText
                 })
             });
             const res = await response.json()
@@ -60,38 +64,49 @@ export default () => {
     }, [])
     return (
         <>
+            <div className="search-box" >
+                <div >
+                    Servey No : <input value={searchedText.survey_no} onChange={(e) => setSearchedText((k) => ({ receiptId: '', survey_no: e.target.value }))} />
+                </div>
+                <div >
+                    Receipt Id : <input value={searchedText.receiptId} onChange={(e) => setSearchedText((k) => ({ survey_no: '', receiptId: e.target.value }))} />
+                </div>
+                <button onClick={() => getLandList()} >Search</button>
+            </div>
             <table className="doc-table-container">
                 <thead>
                     <tr>
                         <th >SN</th>
+                        <th>Receipt No.</th>
                         <th>Survey No.</th>
                         <th>Owner name</th>
                         {/* <th>Sent To</th> */}
                         <th>Address</th>
                         <th>Sent On</th>
                         <th>Status</th>
-                        <th>Actions</th>
+                        {/* <th>Actions</th> */}
                     </tr>
                 </thead>
                 <tbody id="receipt-pending-list">
 
                     {recilList.length ? recilList.map((e, index) => <tr key={index} >
                         <td>{index + 1}</td>
+                        <td>{e.receiptId}</td>
                         <td>{e.survey_no}</td>
                         <td>{e.owner_name}</td>
                         {/* <td>Clerk</td> */}
                         <td>{e.address}</td>
                         <td>{new Date(e.updatedAt).toLocaleDateString()} {new Date(e.updatedAt).toLocaleTimeString()}</td>
                         <td><span className={`status-badge ${e.status}`} >{e.status}</span></td>
-                        <td>
+                        {/* <td>
                             <div className="action-icons">
                                 <i className="fas fa-eye" title="View"></i>
                                 <i className="fas fa-download" title="Download"></i>
                             </div>
-                        </td>
+                        </td> */}
                     </tr>) :
                         <tr>
-                            <td colSpan="9" style={{textAlign: 'center'}}>No Record(s) Found</td>
+                            <td colSpan="9" style={{ textAlign: 'center' }}>No Record(s) Found</td>
                         </tr>}
                 </tbody>
             </table>
