@@ -58,7 +58,7 @@ export default () => {
                 const acc = await Swal.fire({
                     title: "Confirmation",
                     text: "File successfull",
-                    icon: "warning",
+                    icon: "success",
                     // showCancelButton: true,
                     confirmButtonColor: "#3085d6",
                     // cancelButtonColor: "#d33",

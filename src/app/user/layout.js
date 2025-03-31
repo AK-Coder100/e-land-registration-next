@@ -31,7 +31,7 @@ export default ({ children }) => {
         { id: "filesent", label: "Sent", href: "/user/file/sent" },
         { id: "issue", label: "ISSUE", href: "/user/issue", disabled: true },
         { id: "issue-inbox", label: "Inbox", href: "/user/issue/inbox" },
-        { id: "issue-returned", label: "Returned", href: "/user/returned" },
+        { id: "issue-returned", label: "Returned", href: "/user/issue/returned" },
     ];
 
     useEffect(() => {
@@ -60,7 +60,8 @@ export default ({ children }) => {
                     </div>
                 </header>
                 <div className="sidebar">
-                    <div className="sidebar-icon active" data-icon="menu"><i className="fas fa-bars"></i></div>
+                    <div className="sidebar-icon " data-icon="menu"><i className="fas fa-bars"></i></div>
+                    {/* <div className="sidebar-icon active" data-icon="menu"><i className="fas fa-bars"></i></div> */}
                     <div className="sidebar-icon" data-icon="file"><i className="fas fa-file"></i></div>
                     <div className="sidebar-icon" data-icon="folder"><i className="fas fa-folder"></i></div>
                     <div className="sidebar-icon" data-icon="pdf"><i className="fas fa-file-pdf"></i></div>

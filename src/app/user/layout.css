@@ -122,7 +122,6 @@ body {
 /* Sidebar Styles */
 .sidebar {
     width: 60px; /* Fixed width for the sidebar */
-    background: #007bff; /* Blue background matching your image */
     position: fixed; /* Stick to the left of the viewport */
     top: 0;
     left: 0;
@@ -132,6 +131,7 @@ body {
     align-items: center;
     padding-top: 10px;
     z-index: 1000; /* Ensure sidebar stays on top */
+    overflow: hidden;
 }
 
 .sidebar-icon {
@@ -143,6 +143,7 @@ body {
     justify-content: center;
     cursor: pointer;
     color: white; /* White icon color for contrast against blue background */
+    
 }
 
 .sidebar-icon:hover {
