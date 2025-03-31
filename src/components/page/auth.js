@@ -8,6 +8,10 @@ import { useState } from "react"
 export default () => {
     const router = useRouter()
     const dispatch = useAppDispatch()
+    const [loadingStatus, setLoadingStatus] = useState({
+        admin:0,
+        user:0
+    })
     const [userFormData, setUserFormData] = useState({
         username: '',
         password: ''
@@ -33,6 +37,7 @@ export default () => {
             alert("Please fill in all fields");
             // return;
         }
+        setLoadingStatus((pre) => ({...pre, user:1}))
         const response = await fetch("http://localhost:8080/api/user/login", {
             method: "POST",
             headers: {
@@ -42,6 +47,7 @@ export default () => {
             },
             body: JSON.stringify(userFormData)
         });
+        setLoadingStatus((pre) => ({...pre, user:0}))
         const res = await response.json()
         if (!res.status || !res.data) {
             showErrors(res)
@@ -58,6 +64,7 @@ export default () => {
     }
     const handleOfficialLogin = async (event) => {
         event.preventDefault()
+        setLoadingStatus((pre) => ({...pre, admin:1}))
         const response = await fetch("http://localhost:8080/api/official/login", {
             method: "POST",
             headers: {
@@ -67,6 +74,8 @@ export default () => {
             },
             body: JSON.stringify(officialFormData)
         });
+        
+        setLoadingStatus((pre) => ({...pre, admin:0}))
         const res = await response.json()
         if (!response.ok) {
             alert(res.message)
@@ -110,9 +119,9 @@ export default () => {
                         <input onChange={(e) => handleChange(e)} value={userFormData.username} type="text" name="username" placeholder="Username" required />
                         <input onChange={(e) => handleChange(e)} value={userFormData.password} type="password" name="password" placeholder="Password" required />
                         <div className="spacer"></div>
-                        <button type="submit" className="button">
+                        <button disabled={!!loadingStatus.user} type="submit" className="button">
                             <i className="fas fa-sign-in-alt"></i>
-                            Login
+                            {!!loadingStatus.user ? 'Loging in' : 'Login'}
                         </button>
                         <p>New User? <a href="register.html">Register</a></p>
                         <p className="forgot-password">
@@ -130,9 +139,9 @@ export default () => {
                             {roles.map((item, index) => <option key={index} value={item.value}>{item.text}</option>)}
                         </select>
                         <input type="password" value={officialFormData.password} onChange={handleOficialChange} placeholder="Password" name="password" required />
-                        <button type="submit" className="button">
+                        <button disabled={!!loadingStatus.admin} type="submit" className="button">
                             <i className="fas fa-user-shield"></i>
-                            Login
+                            {!!loadingStatus.admin ? 'Loging in' : 'Login'}
                         </button>
                         <p>
                             New Official? <a href="officialregistration.html">Register</a>

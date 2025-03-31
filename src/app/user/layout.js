@@ -24,7 +24,7 @@ export default ({ children }) => {
         { id: "create", label: "Create", href: "/user/receipt/create" },
         { id: "inbox", label: "Inbox", href: "/user/receipt/inbox" },
         { id: "sent", label: "Sent", href: "/user/receipt/sent" },
-        { id: "search", label: "Advance Search", href: "/user/search" },
+        { id: "search", label: "Advance Search", href: "/user/receipt/search" },
         { id: "file", label: "FILE", disabled: true },
         { id: "file-create", label: "Create", href: "/user/file/create" },
         { id: "file-inbox", label: "Inbox", href: "/user/file/inbox" },
