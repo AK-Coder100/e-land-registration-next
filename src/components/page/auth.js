@@ -1,10 +1,13 @@
 'use client'
 
+import { useAppDispatch } from "@/store/hooks"
+import { login } from "@/store/slices/user"
 import { useRouter } from "next/navigation"
 import { useState } from "react"
 
 export default () => {
     const router = useRouter()
+    const dispatch = useAppDispatch()
     const [userFormData, setUserFormData] = useState({
         username: '',
         password: ''
@@ -40,9 +43,10 @@ export default () => {
             body: JSON.stringify(userFormData)
         });
         const res = await response.json()
-        if (!res.status) {
+        if (!res.status || !res.data) {
             showErrors(res)
         } else {
+            dispatch(login(res.data))
             // Redirect to user dashboard
             document.cookie = `token=${res.data.token}`;
             delete res.token

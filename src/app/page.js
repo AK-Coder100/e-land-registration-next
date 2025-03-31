@@ -1,11 +1,20 @@
-// app/page.js
+"use client"
 
-import { redirect } from 'next/navigation';
+import { useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
 
-export default function HomePage() {
-  // Redirect to the /auth page
-  redirect('/auth');
-  
-  // You can return some fallback UI or an empty component
-  return null;
+export default function Home() {
+  const router = useRouter();
+  let hasRedirected = false;
+
+  useEffect(() => {
+    if (!hasRedirected) {
+      hasRedirected = true; // Ensure the redirect only happens once
+      router.replace("/auth");
+    }
+  }, []);
+
+  return (
+    <div></div>
+  );
 }

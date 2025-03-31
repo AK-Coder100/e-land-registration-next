@@ -6,8 +6,11 @@ import '../user/inbox.css'
 import '../user/file.css'
 import { usePathname, useRouter } from "next/navigation";
 import Link from "next/link";
+import { useAppDispatch } from "@/store/hooks";
+import { logout } from "@/store/slices/user";
 
 export default ({ children }) => {
+    const dispatch = useAppDispatch()
     const [userData, setUserData] = useState({
         username: ''
     })
@@ -49,7 +52,7 @@ export default ({ children }) => {
                             <div className="dropdown-content">
                                 <a href="#">Profile</a>
                                 <a href="#">Settings</a>
-                                <a href="{% url 'logout' %}" className="logout-link">Logout</a>
+                                <span onClick={() => dispatch(logout())} >Logout</span>
                             </div>
                         </div>
                         <i className="fas fa-user-circle user-icon"></i>
