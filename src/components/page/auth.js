@@ -9,8 +9,8 @@ export default () => {
     const router = useRouter()
     const dispatch = useAppDispatch()
     const [loadingStatus, setLoadingStatus] = useState({
-        admin:0,
-        user:0
+        admin: 0,
+        user: 0
     })
     const [userFormData, setUserFormData] = useState({
         username: '',
@@ -37,7 +37,7 @@ export default () => {
             alert("Please fill in all fields");
             // return;
         }
-        setLoadingStatus((pre) => ({...pre, user:1}))
+        setLoadingStatus((pre) => ({ ...pre, user: 1 }))
         const response = await fetch("http://localhost:8080/api/user/login", {
             method: "POST",
             headers: {
@@ -47,7 +47,7 @@ export default () => {
             },
             body: JSON.stringify(userFormData)
         });
-        setLoadingStatus((pre) => ({...pre, user:0}))
+        setLoadingStatus((pre) => ({ ...pre, user: 0 }))
         const res = await response.json()
         if (!res.status || !res.data) {
             showErrors(res)
@@ -64,7 +64,7 @@ export default () => {
     }
     const handleOfficialLogin = async (event) => {
         event.preventDefault()
-        setLoadingStatus((pre) => ({...pre, admin:1}))
+        setLoadingStatus((pre) => ({ ...pre, admin: 1 }))
         const response = await fetch("http://localhost:8080/api/official/login", {
             method: "POST",
             headers: {
@@ -74,12 +74,63 @@ export default () => {
             },
             body: JSON.stringify(officialFormData)
         });
-        
-        setLoadingStatus((pre) => ({...pre, admin:0}))
+
+        setLoadingStatus((pre) => ({ ...pre, admin: 0 }))
         const res = await response.json()
         if (!response.ok) {
             alert(res.message)
             return
+        } else {
+            document.cookie = `token=${res.data.token}`;
+            delete res.token
+            localStorage.setItem('official', JSON.stringify(res.data))
+            showErrors(res)
+            // For demonstration purposes - in production this would validate against a server
+            switch (officialFormData.role) {
+                case "clerk":
+                    router.push("clerk/dashboard")    
+                    break;
+                case "officer":
+                    router.push("official/dashboard")
+                    break;
+                case "superintendent":
+                    router.push("superintendent/dashboard")
+                    break;
+                case "project_officer":
+                    router.push("projectofficer/dashboard")
+                    break;
+                case "mro":
+                    router.push("mro/dashboard")
+                    break;
+                case "surveyor":
+                    router.push("surveyor/dashboard")
+                    break;
+                case "revenueinspector":
+                    router.push("revenueinspector/dashboard")    
+                window.location.href = "revenueinspectordashboard.html";
+                    break;
+                case "vro":
+                    router.push("vro/dashboard")
+                    break;
+                case "revenuedepartmentofficer":
+                    router.push("revenuedepartmentofficer/dashboard")
+                    break;
+                case "jointcollector":
+                    router.push("jointcollector/dashboard")
+                    break;
+                case "district_collector":
+                    router.push("districtcollector/dashboard")
+                    break;
+                case "ministryofwelfare":
+                    router.push("ministryofwelfare/dashboard")
+                    break;
+                case "admin":
+                    router.push("admin/dashboard")
+                    break;
+                default:
+                    alert("Invalid role selected");
+
+            }
         }
     }
     const handleChange = (e) => {
