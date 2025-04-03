@@ -5,7 +5,6 @@ import '../user/layout.css'
 import '../user/inbox.css'
 import '../user/file.css'
 import { usePathname, useRouter } from "next/navigation";
-import Link from "next/link";
 import { useAppDispatch } from "@/store/hooks";
 import { logout } from "@/store/slices/user";
 

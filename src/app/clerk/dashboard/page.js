@@ -1,7 +1,6 @@
 'use client'
 
 import { useEffect, useState } from "react"
-
 export default () => {
     const [landList, setLandList] = useState([])
     const [paginationData, setPaginationData] = useState({
