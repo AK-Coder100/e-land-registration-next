@@ -91,7 +91,7 @@ export default () => {
                     router.push("clerk/dashboard")    
                     break;
                 case "officer":
-                    router.push("official/dashboard")
+                    router.push("officer/dashboard")
                     break;
                 case "superintendent":
                     router.push("superintendent/dashboard")
