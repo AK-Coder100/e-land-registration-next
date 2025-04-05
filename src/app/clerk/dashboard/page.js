@@ -1,5 +1,6 @@
 'use client'
 
+import { ViewLand } from "@/components/Model/ViewLand"
 import { useEffect, useState } from "react"
 export default () => {
     const [landList, setLandList] = useState([])
@@ -7,6 +8,7 @@ export default () => {
         currentPage: 0,
         totalPages: 0
     })
+    const [landToPreView, setLandToPreView] = useState("")
     const [loadingStatus, setLoadingStatus] = useState(0) // 0 => none, 1 => loading
     const [userData, setUserData] = useState({
         name: '',
@@ -85,7 +87,6 @@ export default () => {
     }, [])
     return (
         <>
-
             <div className="body-container">
                 <div className="content" style={{ flexGrow: '1' }}>
                     <div id="pendingApplicationsSection" className="rectangle">
@@ -138,7 +139,7 @@ export default () => {
                                                 <td> <span className={`status-badge ${record.status}`} >{record.status}</span></td>
                                                 <td>
                                                     <div className="action-icons">
-                                                        <i className="fas fa-eye" title="View Details"></i>
+                                                        <i onClick={() => setLandToPreView(record._id)} className="fas fa-eye" title="View Details"></i>
                                                         <i onClick={() => updateStatus('approved', record._id)} className="fas fa-check-circle" title="Approve"></i>
                                                         <i onClick={() => updateStatus('rejected', record._id)} className="fas fa-times-circle" title="Reject"></i>
                                                         <i className="fas fa-comment" title="Add Comment"></i>
@@ -170,6 +171,7 @@ export default () => {
                     </div>
                 </div>
             </div>
+            <ViewLand landId={landToPreView} onClose={() => setLandToPreView('')} />
         </>
     )
 }

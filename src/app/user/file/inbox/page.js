@@ -1,10 +1,12 @@
 'use client'
 
+import { ViewRecipt } from "@/components/Model/ViewRecipt";
 import { useEffect, useState } from "react";
 
 
 export default () => {
     const [recilList, setReciptList] = useState([])
+    const [landToPreView, setLandToPreView] = useState("")
     var getLandList = async () => {
         try {
             const response = await fetch("http://localhost:8080/api/land/get-recipt-list", {
@@ -18,7 +20,7 @@ export default () => {
                 body: JSON.stringify({
                     page: 1,
                     limit: 10,
-                    status:'file'
+                    status: 'file'
                 })
             });
             const res = await response.json()
@@ -59,6 +61,7 @@ export default () => {
     }, [])
     return (
         <>
+            <ViewRecipt landId={landToPreView} onClose={() => setLandToPreView('')} />
             <table className="doc-table-container">
                 <thead>
                     <tr>
@@ -84,13 +87,13 @@ export default () => {
                         <td><span className={`status-badge ${e.status}`} >{e.status}</span></td>
                         <td>
                             <div className="action-icons">
-                                <i className="fas fa-eye" title="View"></i>
+                                <i className="fas fa-eye" title="View" onClick={() => setLandToPreView(e.receiptId)} ></i>
                                 <i className="fas fa-download" title="Download"></i>
                             </div>
                         </td>
                     </tr>) :
                         <tr>
-                            <td colSpan="9" style={{textAlign: 'center'}}>No Record(s) Found</td>
+                            <td colSpan="9" style={{ textAlign: 'center' }}>No Record(s) Found</td>
                         </tr>}
                 </tbody>
             </table>
