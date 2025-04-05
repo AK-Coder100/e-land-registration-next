@@ -2,10 +2,11 @@
 
 import { useEffect, useState } from "react";
 
-
+import { ViewLand } from "@/components/Model/ViewLand";
 export default () => {
-    var dataList = {}
     const [recilList, setReciptList] = useState([])
+    const [landToPreView, setLandToPreView] = useState("")
+
     var getLandList = async () => {
         try {
             const response = await fetch("http://localhost:8080/api/land/get-recipt-list", {
@@ -19,36 +20,12 @@ export default () => {
                 body: JSON.stringify({
                     page: 1,
                     limit: 10,
-                    status:['submitted']
+                    status: ['submitted']
                 })
             });
             const res = await response.json()
             if (res.status) {
                 setReciptList(res.data)
-                //         const tbody = document.getElementById('receipt-pending-list')
-                //         tbody.innerHTML = ''
-                //         res.data.forEach((rowData, index) => {
-                //             const idss = rowData._id
-                //             dataList[`${idss}`] = rowData
-                //             const row = document.createElement('tr')
-                //             const rowD = `<tr>
-                //     <td>${index+1}</td>
-                //     <td>${rowData.survey_no}</td>
-                //     <td>${rowData.owner_name}</td>
-                //     <td>Clerk</td>
-                //     <td>${rowData.address}</td>
-                //     <td>${new Date(rowData.updatedAt).toLocaleDateString()} ${new Date(rowData.updatedAt).toLocaleTimeString()}</td>
-                //     <td><span className="status-badge ${rowData.status}" >${rowData.status}</span></td>
-                //     <td>
-                //       <div className="action-icons">
-                //         <i className="fas fa-eye" onclick="showUserData('${rowData._id}')" title="View"></i>
-                //         <i className="fas fa-download" onclick="downloadPDF('${rowData._id}')" title="Download"></i>
-                //       </div>
-                //     </td>
-                //   </tr>`
-                //             row.innerHTML = rowD
-                //             tbody.appendChild(row)
-                //         })
 
             }
         } catch {
@@ -60,6 +37,7 @@ export default () => {
     }, [])
     return (
         <>
+            <ViewLand landId={landToPreView} />
             <table className="doc-table-container">
                 <thead>
                     <tr>
@@ -85,13 +63,13 @@ export default () => {
                         <td><span className={`status-badge ${e.status}`} >{e.status}</span></td>
                         <td>
                             <div className="action-icons">
-                                <i className="fas fa-eye" title="View"></i>
+                                <i className="fas fa-eye" title="View" onClick={() => setLandToPreView(e._id)}></i>
                                 <i className="fas fa-download" title="Download"></i>
                             </div>
                         </td>
                     </tr>) :
                         <tr>
-                            <td colSpan="9" style={{textAlign: 'center'}}>No Record(s) Found</td>
+                            <td colSpan="9" style={{ textAlign: 'center' }}>No Record(s) Found</td>
                         </tr>}
                 </tbody>
             </table>

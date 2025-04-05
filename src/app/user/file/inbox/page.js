@@ -4,7 +4,6 @@ import { useEffect, useState } from "react";
 
 
 export default () => {
-    var dataList = {}
     const [recilList, setReciptList] = useState([])
     var getLandList = async () => {
         try {
