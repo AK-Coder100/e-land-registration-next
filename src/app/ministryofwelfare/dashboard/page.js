@@ -27,7 +27,7 @@ export default () => {
     const getLandList = async (page = 1) => {
         try {
             setLoadingStatus(1)
-            const response = await fetch("http://localhost:8080/api/land/list-clerk", {
+            const response = await fetch("http://localhost:8080/api/land/list-all", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
@@ -36,6 +36,7 @@ export default () => {
                     authrization: document.cookie.split("token=")[1]
                 },
                 body: JSON.stringify({
+                    reviewedBY:'districtcollector',
                     page: page,
                     limit: 10
                 })
@@ -65,7 +66,7 @@ export default () => {
                     mode: 'no-cors',
                     authrization: document.cookie.split("token=")[1]
                 },
-                body: JSON.stringify({ status, id, reviewedBY: "clerk" })
+                body: JSON.stringify({ status, id, reviewedBY: "ministryofwelfare" })
             });
             if (response.ok) {
                 alert('updated')
